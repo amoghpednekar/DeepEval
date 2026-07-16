@@ -1,0 +1,83 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Virtual environments
+.venv/
+venv/
+env/
+backend/venv/
+frontend/node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Database
+*.db
+*.sqlite3
+*.sqlite
+chroma_db/
+
+# Logs
+*.log
+logs/
+
+# Node (if using frontend)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Next.js
+.next/
+out/
+
+# Credentials
+secrets.yaml
+credentials.json
+
+# DeepEval Cache
+tests/.deepeval/
+.deepeval/
+.deepeval-cache.json
+.deepeval_telemetry.txt
+.latest_test_run.json
