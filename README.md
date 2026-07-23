@@ -123,12 +123,17 @@ CONFIDENT_AI_API_KEY=your_api_key_here
 ollama serve
 
 # In another terminal, start the backend
-cd ../backend
+cd backend
 python -m uvicorn main:app --host 0.0.0.0 --port 8000
 
-# In another terminal, run tests
-jupyter notebook tests/DeepEval_metrics_llms.ipynb
+# Notebook-based DeepEval evaluation
+jupyter notebook tests/notebooks_test/DeepEval_metrics_llms.ipynb
+
+# Pytest regression checks for the chatbot flow
+pytest tests/pytest_test/test_chatbot.py
 ```
+
+> Keep local API keys and model credentials in `.env` only. Do not commit `.env` or any generated DeepEval cache files.
 
 ## 📊 Test Scenarios
 
@@ -211,8 +216,19 @@ jupyter notebook tests/DeepEval_metrics_llms.ipynb
 │   └── next.config.js
 │
 └── tests/                             # Testing & Evaluation
-    └── DeepEval_metrics_llms.ipynb    # Main test notebook
+    ├── notebooks_test/                 # Notebook-based DeepEval metrics workflow
+    │   └── DeepEval_metrics_llms.ipynb
+    └── pytest_test/                    # Pytest regression tests for chatbot behavior
+        ├── conftest.py
+        └── test_chatbot.py
 ```
+
+## 🧪 Test Coverage
+
+This repository now supports both notebook-driven evaluation and pytest-based regression checks:
+
+- `tests/notebooks_test/DeepEval_metrics_llms.ipynb` contains the notebook workflow for DeepEval metrics, local Ollama setup, session-based chat evaluation, and cart correctness checks.
+- `tests/pytest_test/test_chatbot.py` exercises the chatbot end-to-end against the FastAPI backend and validates cart updates with pytest.
 
 ## 🧪 Notebook Cells Breakdown
 
