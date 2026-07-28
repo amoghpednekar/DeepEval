@@ -130,8 +130,21 @@ python -m uvicorn main:app --host 0.0.0.0 --port 8000
 jupyter notebook tests/notebooks_test/DeepEval_metrics_llms.ipynb
 
 # Pytest regression checks for the chatbot flow
-pytest tests/pytest_test/test_chatbot.py
+python -m pytest tests/pytest_test/test_chatbot.py -vv -s
+
+# Pytest test for cart clearing via chat
+python -m pytest tests/pytest_test/test_cart_with_chatbot.py -vv -s
 ```
+
+> **Note:** Always use `python -m pytest` and `python -m uvicorn` to avoid stale interpreter paths if the virtual environment was moved or recreated. If you encounter "bad interpreter" errors, recreate the venv with:
+> ```bash
+> deactivate 2>/dev/null || true
+> rm -rf .venv
+> python3.11 -m venv .venv
+> source .venv/bin/activate
+> pip install --upgrade pip
+> pip install -r requirements.txt
+> ```
 
 > Keep local API keys and model credentials in `.env` only. Do not commit `.env` or any generated DeepEval cache files.
 
@@ -164,7 +177,16 @@ pytest tests/pytest_test/test_chatbot.py
 - Inappropriate content detection
 - Safe response generation
 
-### Test 4: Contextual Precision
+### Test 4: Cart Clearing via Chat
+**Input:** "clear my cart", "remove items from my cart", "empty my cart"  
+**Evaluation:** Does the chatbot correctly clear the cart and acknowledge the action?
+
+**Metrics:**
+- Cart count awareness (verifies cart is empty)
+- Response clarity and confirmation
+- Proper backend integration
+
+### Test 5: Contextual Precision
 **Input:** "What if these shoes don't fit?"  
 **Evaluation:** Is the retrieved context relevant to the user's question?
 
@@ -219,8 +241,9 @@ pytest tests/pytest_test/test_chatbot.py
     ├── notebooks_test/                 # Notebook-based DeepEval metrics workflow
     │   └── DeepEval_metrics_llms.ipynb
     └── pytest_test/                    # Pytest regression tests for chatbot behavior
-        ├── conftest.py
-        └── test_chatbot.py
+        ├── conftest.py                 # Shared fixtures and utilities
+        ├── test_chatbot.py             # Core chatbot functionality tests
+        └── test_cart_with_chatbot.py   # Cart clearing via chat tests
 ```
 
 ## 🧪 Test Coverage
@@ -229,6 +252,7 @@ This repository now supports both notebook-driven evaluation and pytest-based re
 
 - `tests/notebooks_test/DeepEval_metrics_llms.ipynb` contains the notebook workflow for DeepEval metrics, local Ollama setup, session-based chat evaluation, and cart correctness checks.
 - `tests/pytest_test/test_chatbot.py` exercises the chatbot end-to-end against the FastAPI backend and validates cart updates with pytest.
+- `tests/pytest_test/test_cart_with_chatbot.py` contains parameterized tests for cart clearing via chat with multiple clear phrases to verify cart awareness.
 
 ## 🧪 Notebook Cells Breakdown
 

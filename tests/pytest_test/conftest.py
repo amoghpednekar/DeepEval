@@ -10,6 +10,7 @@ import requests
 import json
 import uuid
 import pytest
+import deepeval
 
 BACKEND_URL = os.environ.get("BACKEND_URL", "http://localhost:8000")
 
@@ -74,16 +75,9 @@ class OllamaModelNoThink(OllamaModel):
             ),
             0,
         )
-@pytest.fixture(scope="session") #reusable methods
-def judge():
-    return OllamaModelNoThink(
-    model=os.getenv("LOCAL_MODEL_NAME"), 
-    base_url=os.getenv("LOCAL_MODEL_BASE_URL")
-)
+
 
 ## --- Application specific methods---
-
-
 
 def chat(message: str, session_id: str) -> str:
     """
@@ -116,6 +110,18 @@ def chat(message: str, session_id: str) -> str:
             pass
     return full_text.strip()
 
+
+def get_cart(session_id: str) -> dict:
+    resp = requests.get(f"{BACKEND_URL}/api/cart/{session_id}", timeout=10)
+    return resp.json()
+
+## ---- fixtures Methods that will be used acrossed the test----
+
+def pytest_configure():
+    api_key = os.getenv("CONFIDENT_API_KEY")
+    if api_key:
+        deepeval.login(api_key=api_key)
+
 @pytest.fixture #reusable methods
 def session_id() -> str:
     """
@@ -123,6 +129,9 @@ def session_id() -> str:
     """
     return f"test_{uuid.uuid4().hex[:12]}"
 
-def get_cart(session_id: str) -> dict:
-    resp = requests.get(f"{BACKEND_URL}/api/cart/{session_id}", timeout=10)
-    return resp.json()
+@pytest.fixture(scope="session") #reusable methods
+def judge():
+    return OllamaModelNoThink(
+    model=os.getenv("LOCAL_MODEL_NAME"), 
+    base_url=os.getenv("LOCAL_MODEL_BASE_URL")
+)

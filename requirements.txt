@@ -13,3 +13,4 @@ pyyaml==6.0.3
 pytest==9.0.3
 requests==2.33.1
 deepeval==3.9.7
+python-dotenv>=1.0.0

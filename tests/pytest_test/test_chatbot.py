@@ -109,3 +109,71 @@ def test_add_cart_again(judge,session_id):
             metrics = [correctness,confirmation],
             async_config=AsyncConfig(run_async=False)
     )
+
+class TestCartCountCorrectness:
+    def test_cart_count(self,judge,session_id):
+        #session = session_id()
+        chat("add 2 Merino Wool Sweater of size L of colour Oatmeal to my cart", session_id)
+        cart_details = get_cart(session_id)
+
+        cart_actual_output = json.dumps(cart_details, indent=2)
+
+
+        cart_count_correctness = GEval(
+            name = "Cart Count Correctness",
+            criteria = (
+                "evaluate whether the items in the cart matches the item Merino Wool Sweater"
+                "also verify quantity in the cart matches the requested count"
+            ),
+            evaluation_steps=[
+                "check whether the product name description or selected option is sematically matching"
+                "check the total quantiy across match cart items"
+            ],
+            evaluation_params = [LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
+            threshold = 0.7,
+            model = judge
+        )
+
+        test_case1 = LLMTestCase(
+            input="add 2 Merino Wool Sweater of size L of colour Oatmeal to my cart",
+            actual_output= cart_actual_output
+        )
+
+        evaluate(test_cases =[test_case1],
+                metrics = [cart_count_correctness],
+                async_config=AsyncConfig(run_async=False)
+        )
+
+    def test_cart_count1(self,judge,session_id):
+       #session = session_id()
+        chat("add 2 Merino Wool Sweater of size L of colour Oatmeal to my cart", session_id)
+        cart_details = get_cart(session_id)
+       
+        cart_actual_output = json.dumps(cart_details, indent=2)
+       
+       
+        cart_count_correctness = GEval(
+            name = "Cart Count Correctness",
+            criteria = (
+                "evaluate whether the items in the cart matches the item Merino Wool Sweater"
+                "also verify quantity in the cart matches the requested count"
+                ),
+            evaluation_steps=[
+                    "check whether the product name description or selected option is sematically matching"
+                    "check the total quantiy across match cart items"
+                ],
+            evaluation_params = [LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
+            threshold = 0.7,
+            model = judge
+        )
+       
+        test_case1 = LLMTestCase(
+            input="add 2 Merino Wool Sweater of size L of colour Oatmeal to my cart",
+            actual_output= cart_actual_output
+        )
+       
+        evaluate(test_cases =[test_case1],
+            metrics = [cart_count_correctness],
+            async_config=AsyncConfig(run_async=False)
+        )
+                
