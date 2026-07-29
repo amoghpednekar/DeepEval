@@ -115,6 +115,9 @@ def get_cart(session_id: str) -> dict:
     resp = requests.get(f"{BACKEND_URL}/api/cart/{session_id}", timeout=10)
     return resp.json()
 
+def clear_cart(session_id:str):
+    requests.delete(f"{BACKEND_URL}/api/cart/{session_id}/clear", timeout=10)
+
 ## ---- fixtures Methods that will be used acrossed the test----
 
 def pytest_configure():
